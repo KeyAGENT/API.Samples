@@ -36,7 +36,8 @@ namespace Client
                 //POST the data as JSON to the KeyAGENT API
                 //note that the orderReference is passed as part of the URL
                 var response =
-                    await client.PostAsJsonAsync<AssetSelectionRequest>($"https://api.keyagent-portal.co.uk/api/order/{orderReference}/assetselection",
+                    await client.PostAsJsonAsync<AssetSelectionRequest>(
+                        $"https://api.keyagent-portal.co.uk/api/order/{orderReference}/assetselection",
                         assetRequest);
 
                 //report any errors back to the calling code
