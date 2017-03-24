@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using KeyAgent.API.Models;
 using KeyAgent.API.Models.Order;
+using KeyAgent.API.Models.Order.People.KeyHolder;
+using KeyAgent.API.Models.Order.Product;
+using KeyAgent.API.Models.Order.Property;
 
 namespace Client
 {
@@ -15,10 +18,89 @@ namespace Client
         {
         }
 
+        static async void RequestPhotoProduct(long orderReference)
+        {
+            var productRequest = new PhotosProduct
+            {
+                Quantity = 12
+            };
+
+            using (var client = new HttpClient())
+            {
+                //POST the data as JSON to the KeyAGENT API
+                //note that the orderReference is passed as part of the URL
+                var response =
+                    await client.PostAsJsonAsync<PhotosProduct>($"https://api.keyagent-portal.co.uk/api/order/{orderReference}/photos",
+                        productRequest);
+
+                //report any errors back to the calling code
+                if (!response.IsSuccessStatusCode) throw new Exception(response.ReasonPhrase);
+            }
+        }
+
+        static async void RequestEpcProduct(long orderReference)
+        {
+            var productRequest = new EpcProduct
+            {
+               NumberOfBedrooms = 5,
+                PrintedCopies = 1
+            };
+
+            using (var client = new HttpClient())
+            {
+                //POST the data as JSON to the KeyAGENT API
+                //note that the orderReference is passed as part of the URL
+                var response =
+                    await client.PostAsJsonAsync<EpcProduct>($"https://api.keyagent-portal.co.uk/api/order/{orderReference}/epc",
+                        productRequest);
+
+                //report any errors back to the calling code
+                if (!response.IsSuccessStatusCode) throw new Exception(response.ReasonPhrase);
+            }
+        }
+
+        static async void RequestFloorplanProduct(long orderReference)
+        {
+            var productRequest = new FloorplanProduct
+            {
+                FloorPlan2D = true,
+                FloorPlan3D = false
+            };
+
+            using (var client = new HttpClient())
+            {
+                //POST the data as JSON to the KeyAGENT API
+                //note that the orderReference is passed as part of the URL
+                var response =
+                    await client.PostAsJsonAsync<FloorplanProduct>($"https://api.keyagent-portal.co.uk/api/order/{orderReference}/floorplan",
+                        productRequest);
+
+                //report any errors back to the calling code
+                if (!response.IsSuccessStatusCode) throw new Exception(response.ReasonPhrase);
+            }
+        }
+
+        static async void RequestPropertyDescriptionProduct(long orderReference)
+        {
+            var productRequest = new PropertyDescriptionProduct();
+
+            using (var client = new HttpClient())
+            {
+                //POST the data as JSON to the KeyAGENT API
+                //note that the orderReference is passed as part of the URL
+                var response =
+                    await client.PostAsJsonAsync<PropertyDescriptionProduct>($"https://api.keyagent-portal.co.uk/api/order/{orderReference}/propertydescription",
+                        productRequest);
+
+                //report any errors back to the calling code
+                if (!response.IsSuccessStatusCode) throw new Exception(response.ReasonPhrase);
+            }
+        }
+
         static async void RequestOrderAsync()
         {
             //build up the order request from your own data
-            var orderRequest = new OrderPostRequest
+            var orderRequest = new OrderRequest
             {
                 BranchId = "E123456",
                 IntegratorsReference = "YOUR_UNIQUE_REFERENCE",
@@ -35,11 +117,11 @@ namespace Client
                         Phone = "02012345678"
                     }
                 },
-                Property = new OrderProperty
+                Property = new Property
                 {
-                    NumberOfBedrooms = 5,
+                    Bedrooms = 5,
                     PropertyType = EnPropertyType.House,
-                    SquareFootage = EnSquareFootage.Above2000,
+                    SquareFootage = 4800,
                     Address = new Address
                     {
                         Line1 = "The Maples",
@@ -56,7 +138,7 @@ namespace Client
             {
                 //POST the data as JSON to the KeyAGENT API
                 var orderResponse =
-                    await client.PostAsJsonAsync<OrderPostRequest>("https://api.keyagent-portal.co.uk/api/order",
+                    await client.PostAsJsonAsync<OrderRequest>("https://api.keyagent-portal.co.uk/api/order",
                         orderRequest);
 
                 //report any errors back to the calling code

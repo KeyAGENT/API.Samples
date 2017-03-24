@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="KeyAgent.API.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\KeyAgent.API.Models.1.0.3\lib\net461\KeyAgent.API.Models.dll</HintPath>
+      <HintPath>..\packages\KeyAgent.API.Models.1.0.8\lib\net461\KeyAgent.API.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
