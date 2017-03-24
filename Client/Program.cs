@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeyAgent.API.Models;
 using KeyAgent.API.Models.Order;
+using KeyAgent.API.Models.Order.Asset;
 using KeyAgent.API.Models.Order.People.KeyHolder;
 using KeyAgent.API.Models.Order.Product;
 using KeyAgent.API.Models.Order.Property;
@@ -16,6 +17,31 @@ namespace Client
     {
         static void Main(string[] args)
         {
+        }
+
+        static async void RequestAssetSelection(long orderReference, Guid[] selectedAssets)
+        {
+            var assetRequest = new AssetSelectionRequest
+            {
+                ProductType = EnProductType.Photos,
+                AssetIds = new List<Guid>
+                {
+                    new Guid("ID_FROM_PREVIOUS_UPDATE"),
+                    new Guid("ANOTHER_ID_FROM_PREVIOUS_UPDATE")
+                }.ToArray()
+            };
+
+            using (var client = new HttpClient())
+            {
+                //POST the data as JSON to the KeyAGENT API
+                //note that the orderReference is passed as part of the URL
+                var response =
+                    await client.PostAsJsonAsync<AssetSelectionRequest>($"https://api.keyagent-portal.co.uk/api/order/{orderReference}/assetselection",
+                        assetRequest);
+
+                //report any errors back to the calling code
+                if (!response.IsSuccessStatusCode) throw new Exception(response.ReasonPhrase);
+            }
         }
 
         static async void RequestPhotoProduct(long orderReference)
