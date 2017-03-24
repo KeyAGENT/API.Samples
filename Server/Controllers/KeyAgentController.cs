@@ -29,7 +29,7 @@ namespace Server.Controllers
 
         [HttpPost]
         [Route("SupplierUpdate")]
-        public void SupplierUpdate(SupplierUpdate update)
+        public void PFADetailsUpdate(PFADetailsUpdate update)
         {
             //update your record as per the posted update
         }
